@@ -2,6 +2,7 @@
 #define IMAGE_H
 
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 // internamente tutte le immagini saranno con canali 16bit, tanto il risparmio di memoria non è necessario
@@ -19,5 +20,8 @@ typedef struct {
 Image *create_image(int width, int height);
 void free_image(Image **img);
 Pixel *image_at(Image *img, int x, int y);
+
+FILE *read_file(char *filename);
+char *get_file_extension(char *filename);
 
 #endif
