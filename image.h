@@ -24,4 +24,5 @@ Pixel *image_at(Image *img, int x, int y);
 FILE *read_file(char *filename);
 char *get_file_extension(char *filename);
 
+
 #endif

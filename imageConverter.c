@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
         // I need at least 2 characters to find the extension (. and a letter)
         // but since a file like ".p" is a hidden file it is unlikely to be an image
         // It could technically work with only 2 characters but I feel like it's better this way
-        printf("Extension not found. Filename must be at least 3 characters long. 'x.y' \n");
+        printf("Source extension not found. Filename must be at least 3 characters long. 'x.y' \n");
         return -1;
     }
     char *source_extension = get_file_extension(argv[1]);
@@ -36,10 +36,28 @@ int main(int argc, char **argv) {
 
     printf("Detected source extension: %s\n", source_extension);
 
+    // ctrl-c / ctrl-v for the target extension cuz i'm lazy ;)
+    int target_name_lenght = strlen(argv[2]);
+    if (target_name_lenght < 3) {
+        // I need at least 2 characters to find the extension (. and a letter)
+        // but since a file like ".p" is a hidden file it is unlikely to be an image
+        // It could technically work with only 2 characters but I feel like it's better this way
+        printf("Target extension not found. Filename must be at least 3 characters long. 'x.y' \n");
+        return -1;
+    }
+    char *target_extension = get_file_extension(argv[2]);
+    if (target_extension == NULL) {
+        // *source_extension returns NULL if no extension is found
+        printf("Target file extension not found \n");
+        return -1;
+    }
+
+    printf("Detected target extension: %s\n", target_extension);
+
     return 0;
 }
 
 //TODOs
-// 1) check if bot the source and destination extensions are supported. If not show an error
+// 1) check if both the source and destination extensions are supported. If not show an error
 // 2) switch case to convert every known file format in the internal format (possibly in a separate function)
 // 3) switch case to convert from the internal format into an output format (separate function)

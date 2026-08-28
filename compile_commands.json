@@ -1,0 +1,17 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-I.",
+      "-c",
+      "-o",
+      "build/imageConverter.o",
+      "imageConverter.c"
+    ],
+    "directory": "/home/roberto/Progetti/imageConverter",
+    "file": "/home/roberto/Progetti/imageConverter/imageConverter.c",
+    "output": "/home/roberto/Progetti/imageConverter/build/imageConverter.o"
+  }
+]
