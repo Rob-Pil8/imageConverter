@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include "image.h"
@@ -60,20 +61,24 @@ int main(int argc, char **argv) {
     printf("Detected target extension: %s\n", target_extension);
 
     //check if both the source and target extensions are supported
-    if(!str_present_in_str_array(source_extension, supported_formats)) {
-        printf("Source extension not supported.");
-        return -1;
+
+    bool source_ext_supported = true;
+    bool target_ext_supported = true;
+    if(str_present_in_str_array(source_extension, supported_formats) == false) {
+        printf("Source extension not supported. \n");
+        source_ext_supported = false;
     }
 
-    if(!str_present_in_str_array(target_extension, supported_formats)) {
-        printf("Target extension not supported.");
-        return -1;
+    if(str_present_in_str_array(target_extension, supported_formats) == false) {
+        printf("Target extension not supported. \n");
+        target_ext_supported = false;
     }
+
+    if(source_ext_supported == false || target_ext_supported == false) return -1;
 
     return 0;
 }
 
 //TODOs
-// 1) check if both the source and destination extensions are supported. If not show an error
 // 2) switch case to convert every known file format in the internal format (possibly in a separate function)
 // 3) switch case to convert from the internal format into an output format (separate function)

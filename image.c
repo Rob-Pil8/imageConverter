@@ -73,13 +73,14 @@ char *get_file_extension(char *filename) {
 int count_chars_till_char_x(char* string, char x, int start_pos) {
     int counter = 0;
 
-    for(int i=start_pos; i<strlen(string); i++) {
+    for(int i=start_pos; i<(int)strlen(string) + start_pos; i++) {
         if(string[i] != x) {
             counter++;
         } else {
             return counter;
         }
     }
+
     return -1;
 }
 
@@ -87,10 +88,11 @@ int count_chars_till_char_x(char* string, char x, int start_pos) {
 bool str_present_in_str_array(char *str, char *supported_formats) {
     bool supported = false;
     int i=0;
-    char input_ext[strlen(str)];
+    char input_ext[strlen(str) +1];
+    input_ext[strlen(str)] = '\0';
 
-    for(int i=0; i<strlen(str); i++) {
-        input_ext[i] = str[i];
+    for(int p=0; p<(int)strlen(str); p++) {
+        input_ext[p] = str[p];
     }
 
     while(true) {
@@ -99,32 +101,39 @@ bool str_present_in_str_array(char *str, char *supported_formats) {
             break;
         }
 
-        int ext_len = count_chars_till_char_x(supported_formats, 'x', i);
-        char ext_letters[ext_len];
+        int ext_len = count_chars_till_char_x(supported_formats, '_', i);
+        char ext_letters[ext_len+1];
         int equal_letters = 0;
 
-        for(int j=i; j<ext_len; j++) {
+        ext_letters[ext_len] = '\0';
+
+        for(int j=i; j<ext_len + i; j++) {
             ext_letters[j-i] = supported_formats[j];
         }
 
-        if(strlen(input_ext) == strlen(ext_letters)) {
-            for(unsigned long l=0; l<strlen(input_ext); l++) {
-                if(input_ext[l] == ext_letters[l]) {
+        // I'll leave this commented out printf because it revealed a bug
+        // the input extension contains the '.', so it is .bmp and not bmp
+        // hence the ext_letters +1 and l=1 and [l-1] in the following if
+        //printf("%d \n %d", (int)strlen(input_ext), (int)strlen(ext_letters));
+
+        if(strlen(input_ext) == strlen(ext_letters)+1) {
+            for(unsigned long l=1; l<strlen(input_ext)+1; l++) {
+                if(input_ext[l] == ext_letters[l-1]) {
                     equal_letters++;
                 }
             }
         }
 
-        if(equal_letters == (int)strlen(input_ext)) {
+        if(equal_letters == (int)strlen(input_ext) && equal_letters != 0) {
             supported = true;
             break;
         }
 
 
         // if ext_len is 3, the second ext starts at the 4th position -> "bmp_ext2"
-        i = ext_len +1;
+        i += ext_len +1;
     };
 
-
+    //printf("%d \n", supported);
     return supported;
 }

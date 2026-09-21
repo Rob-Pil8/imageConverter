@@ -25,6 +25,6 @@ Pixel *image_at(Image *img, int x, int y);
 FILE *read_file(char *filename);
 char *get_file_extension(char *filename);
 bool str_present_in_str_array(char *str, char *supported_formats);
-int count_chars_till_char_x(char* string, char x, int start_pos)
+int count_chars_till_char_x(char* string, char x, int start_pos);
 
 #endif
