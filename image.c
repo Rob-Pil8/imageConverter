@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 Image *create_image(int width, int height) {
 
@@ -66,4 +67,64 @@ char *get_file_extension(char *filename) {
     }
 
     return extension;
+}
+
+// returns -1 if x is not found in string
+int count_chars_till_char_x(char* string, char x, int start_pos) {
+    int counter = 0;
+
+    for(int i=start_pos; i<strlen(string); i++) {
+        if(string[i] != x) {
+            counter++;
+        } else {
+            return counter;
+        }
+    }
+    return -1;
+}
+
+
+bool str_present_in_str_array(char *str, char *supported_formats) {
+    bool supported = false;
+    int i=0;
+    char input_ext[strlen(str)];
+
+    for(int i=0; i<strlen(str); i++) {
+        input_ext[i] = str[i];
+    }
+
+    while(true) {
+
+        if(supported_formats[i+1] == '\0') {
+            break;
+        }
+
+        int ext_len = count_chars_till_char_x(supported_formats, 'x', i);
+        char ext_letters[ext_len];
+        int equal_letters = 0;
+
+        for(int j=i; j<ext_len; j++) {
+            ext_letters[j-i] = supported_formats[j];
+        }
+
+        if(strlen(input_ext) == strlen(ext_letters)) {
+            for(unsigned long l=0; l<strlen(input_ext); l++) {
+                if(input_ext[l] == ext_letters[l]) {
+                    equal_letters++;
+                }
+            }
+        }
+
+        if(equal_letters == (int)strlen(input_ext)) {
+            supported = true;
+            break;
+        }
+
+
+        // if ext_len is 3, the second ext starts at the 4th position -> "bmp_ext2"
+        i = ext_len +1;
+    };
+
+
+    return supported;
 }

@@ -2,6 +2,11 @@
 #include <string.h>
 #include "image.h"
 
+// surely there are better ways to do this but it works well enough for a small project
+// '_' means that a format has ended
+// to check if a format is the last or not i check if the following character is '\0'
+char *supported_formats = "bmp_";
+
 // USAGE: ./imageConverter input.extension output.extension
 int main(int argc, char **argv) {
 
@@ -53,6 +58,17 @@ int main(int argc, char **argv) {
     }
 
     printf("Detected target extension: %s\n", target_extension);
+
+    //check if both the source and target extensions are supported
+    if(!str_present_in_str_array(source_extension, supported_formats)) {
+        printf("Source extension not supported.");
+        return -1;
+    }
+
+    if(!str_present_in_str_array(target_extension, supported_formats)) {
+        printf("Target extension not supported.");
+        return -1;
+    }
 
     return 0;
 }
