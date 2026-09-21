@@ -1,4 +1,5 @@
 #include "image.h"
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -118,7 +119,7 @@ bool str_present_in_str_array(char *str, char *supported_formats) {
 
         if(strlen(input_ext) == strlen(ext_letters)+1) {
             for(unsigned long l=1; l<strlen(input_ext)+1; l++) {
-                if(input_ext[l] == ext_letters[l-1]) {
+                if(tolower(input_ext[l]) == ext_letters[l-1]) {
                     equal_letters++;
                 }
             }
