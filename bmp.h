@@ -27,6 +27,15 @@ typedef struct __attribute__((packed)) {
     uint32_t biClrImportant;
 } BMPInfoHeader;
 
+// compression formats
+// ce ne sarebbero altri 3 ma tanto supporterò solo il primo
+typedef enum {
+    BI_RGB = 0,
+    BI_RLE8 = 1,
+    BI_RLE4 = 2,
+    BI_BITFIELDS = 3
+} BMPCompression;
+
 
 Image *load_bmp(FILE *bmp_file);
 FILE *write_bmp(Image *image_file);
