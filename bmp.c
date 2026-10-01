@@ -1,5 +1,6 @@
 #include "bmp.h"
 #include "image.h"
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -35,8 +36,6 @@ Image *load_bmp(FILE *bmp_file) {
         return NULL;
     }
 
-    int total_pixels = info_header.biWidth * info_header.biHeight;
-
     Image *img = create_image(info_header.biWidth, info_header.biHeight);
 
     /* BMP uses this quad rbg struct
@@ -54,6 +53,26 @@ Image *load_bmp(FILE *bmp_file) {
     int row_size_no_padding = info_header.biWidth * info_header.biBitCount/8;
     int row_size = ((row_size_no_padding + 3) / 4) * 4;
 
+    // uint8_t cuz i only support 24 bits BMPs.
+    // if I used any other size of bmp i'd need to change approach
+    uint8_t *row = malloc(row_size_no_padding);
 
+    // the first row stored is actually the bottom one
+    int current_row = info_header.biHeight -1;
+    for(int i=0; i<info_header.biHeight; i++) {
+        fread(row, row_size_no_padding, 1, bmp_file);
+        fseek(bmp_file, (row_size - row_size_no_padding), SEEK_CUR);
+
+        for(int j=0; j<info_header.biWidth; j+=3) {
+            uint_fast8_t r = row[j+2];
+            uint_fast8_t g = row[j+1];
+            uint_fast8_t b = row[j];
+            Pixel p = {r, g, b};
+
+            img->pixels[(current_row-1)*info_header.biWidth + j] = p;
+        }
+        current_row--;
+    }
+    free(row);
 
 }
